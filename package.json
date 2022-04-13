@@ -8,5 +8,20 @@
     "dotenv": "^16.0.0",
     "graphql": "^16.3.0",
     "mongoose": "^6.2.10"
-  }
+  },
+  "name": "social-media",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meeckeytek/socail-media.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/meeckeytek/socail-media/issues"
+  },
+  "homepage": "https://github.com/meeckeytek/socail-media#readme",
+  "description": ""
 }

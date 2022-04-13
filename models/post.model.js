@@ -1,23 +1,14 @@
 const mongoose = require("mongoose")
 
 const postSchema = mongoose.Schema({
-    post: String,
-    username: String,
-    comments:[{
-        comment: String,
-        username: String,
-    },{
-        timestamps: true
-    }],
-    likes:[{
-        username: String,
-    },{
-        timestamps: true
-    }],
-    user:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Users'
-    }
+    image:{type: String},
+    title:{type: String},
+    body:{type: String},
+    views:[{type: mongoose.Schema.Types.ObjectId, ref:'User'}],
+    likes:[{type: mongoose.Schema.Types.ObjectId, ref:'User'}],
+    creator:{type: String},
+    cloudinary_id:{type: String},
+    comments:[]
 },{
     timestamps: true
 })
