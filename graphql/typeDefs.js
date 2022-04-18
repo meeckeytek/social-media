@@ -9,21 +9,25 @@ module.exports = gql`
 
   type User {
     id: ID!
+    # picture: String
     firstname: String!
     lastname: String!
     username: String!
     phone: String!
     email: String!
     password: String!
+    # cloudinary_id: String!
+    # token: String!
   }
 
-  input RegisterInput {
+  input RegisterInput{
     firstname: String!
     lastname: String!
     username: String!
     phone: String!
     email: String!
     password: String!
+    confirmPassword: String!
   }
 
   type Query {
@@ -31,6 +35,6 @@ module.exports = gql`
   }
 
   type Mutation {
-    registerUser(registerInpute: RegisterInput): User!
+    registerUser(registerInput: RegisterInput): User!
   }
 `;

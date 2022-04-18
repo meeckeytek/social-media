@@ -1,45 +1,59 @@
 const User = require("../../models/user.model");
+const {UserInputError} = require("apollo-server");
+const { registerInputValidate } = require("../../middleware/validation");
+const {getToken} = require("../../middleware/util")
 
 module.exports = {
-  Query: {
-    async getPosts() {
-      try {
-        const posts = await Post.find();
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
-  },
+  Query: {},
   Mutation: {
     async registerUser(
       _,
       {
-        registerInpute: {
+        registerInput: {
           firstname,
           lastname,
           username,
           phone,
           email,
           password,
+          confirmPassword,
         },
       }
     ) {
-      let newUser = new User({
+      const { valid, errors } = registerInputValidate(
         firstname,
         lastname,
         username,
         phone,
         email,
         password,
-      });
-      try {
-        const res = await newUser.save();
-      } catch (error) {
-        throw new Error(error);
+        confirmPassword
+      );
+      if (!valid) {
+        throw new UserInputError("Errors", {
+          errors,
+        });
       }
-
+      let newUser = new User({
+        picture:"picture",
+        firstname,
+        lastname,
+        username,
+        phone,
+        email,
+        password,
+        cloudinary_id: "cloudinary_id"
+      });
+      let response;
+      try {
+        response = await newUser.save();
+      } catch (err) {
+        throw new Error(err);
+      }
+      // const token = getToken(response);
       return {
-        ...res._doc,
+        ...response._doc,
+        // token
       };
     },
   },
