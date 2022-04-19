@@ -1,4 +1,4 @@
-const registerInputValidate = ({
+const registerInputValidate = (
   firstname,
   lastname,
   username,
@@ -6,21 +6,21 @@ const registerInputValidate = ({
   email,
   password,
   confirmPassword,
-}) => {
+) => {
   const errors = {};
-  if (firstname === "") {
+  if (firstname.trim() === "") {
     errors.firstname = "Please supply your firstname";
   }
-  if (lastname === "") {
+  if (lastname.trim() === "") {
     errors.lastname = "Please supply your lastname";
   }
-  if (username === "") {
+  if (username.trim() === "") {
     errors.username = "Please supply a username";
   }
-  if (phone === "") {
+  if (phone.trim() === "") {
     errors.phone = "Please supply your phone number";
   }
-  if (email === "") {
+  if (email.trim() === "") {
     errors.email = "Please supply your email";
   } else {
     const regEx =
@@ -48,5 +48,32 @@ const registerInputValidate = ({
     valid: Object.keys(errors).length < 1,
   };
 };
+const editInputValidate = (
+  firstname,
+  lastname,
+  username,
+  phone,
+  password,
+  confirmPassword,
+) => {
+  const errors = {};
+  if (firstname && firstname.trim() === "") {
+    errors.firstname = "Please supply your firstname";
+  }
+  if (lastname && lastname.trim() === "") {
+    errors.lastname = "Please supply your lastname";
+  }
+  if (username && username.trim() === "") {
+    errors.username = "Please supply a username";
+  }
+  if (phone && phone.trim() === "") {
+    errors.phone = "Please supply your phone number";
+  }
 
-module.exports = { registerInputValidate };
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+};
+
+module.exports = { registerInputValidate, editInputValidate };

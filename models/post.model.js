@@ -8,7 +8,11 @@ const postSchema = mongoose.Schema({
     likes:[{type: mongoose.Schema.Types.ObjectId, ref:'User'}],
     creator:{type: String},
     cloudinary_id:{type: String},
-    comments:[]
+    comments:[{
+        username: {type: String},
+        comment:{type: String},
+        createdAt:{type: String}
+    }]
 },{
     timestamps: true
 })
