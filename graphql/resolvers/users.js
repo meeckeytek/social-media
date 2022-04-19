@@ -24,7 +24,6 @@ module.exports = {
         ...user._doc
       };
     },
-    // end of get user
 
     // get all users
     async getAllUsers() {
@@ -41,7 +40,6 @@ module.exports = {
       return users;
     },
 
-    // end of all users
   },
   Mutation: {
     // Register user
@@ -113,7 +111,6 @@ module.exports = {
         token: getToken(user),
       };
     },
-    // End of register
     // login user
     async login(_, { email, password }) {
       if (email === "" || password === "") {
@@ -147,7 +144,6 @@ module.exports = {
         token: getToken(user),
       };
     },
-    // end of login
     // edit user
     async editUser(
       _,
@@ -189,7 +185,6 @@ module.exports = {
         throw new Error(error);
       }
     },
-    // end of edit user
     // edit password
     async editPassword(_, { id, password, confirmPassword }) {
       if (password === "" || password !== confirmPassword) {
@@ -218,7 +213,6 @@ module.exports = {
         throw new Error(error);
       }
     },
-    // end edit password
     // delete user
     async deleteUser(_, { id }) {
       let user;
@@ -238,6 +232,5 @@ module.exports = {
         throw new Error(error);
       }
     },
-    // end of delete user
   },
 };
