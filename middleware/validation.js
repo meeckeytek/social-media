@@ -52,9 +52,7 @@ const editInputValidate = (
   firstname,
   lastname,
   username,
-  phone,
-  password,
-  confirmPassword,
+  phone
 ) => {
   const errors = {};
   if (firstname && firstname.trim() === "") {

@@ -50,7 +50,6 @@ module.exports = gql`
   }
 
   input EditUserInput{
-    id: ID!
     picture: String
     firstname: String
     lastname: String
@@ -72,13 +71,14 @@ module.exports = gql`
     registerUser(registerInput: RegisterInput): User!
     login(email: String!, password: String!): User
     editUser(editUserInput: EditUserInput): User!
-    editPassword(id: ID!, password: String!, confirmPassword: String!): String
-    deleteUser(id: ID): String
+    editPassword(userId: ID!, password: String!, confirmPassword: String!): String
+    deleteUser(userId: ID): String
 
     newPost(postInput: PostInputs): Post
-    editPost(id: ID!, editPostInput: EditPostInput): Post
-    likePost(id: ID!): String
-    commentPost(id: ID!, {comment: String}): Post
-    deletePost(id: ID!): String
+    editPost(postId: ID!, editPostInput: EditPostInput): Post
+    likePost(postId: ID!): String
+    commentPost(postId: ID!, comment: String): Post
+    deleteComment(postId: ID!, commentId: ID!): String
+    deletePost(postId: ID!): String
   }
 `;

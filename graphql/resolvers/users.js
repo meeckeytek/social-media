@@ -1,19 +1,23 @@
 const User = require("../../models/user.model");
 const { UserInputError } = require("apollo-server");
+const { getToken, isAuth } = require("../../middleware/util");
+const bcrypt = require("bcryptjs");
 const {
   registerInputValidate,
   editInputValidate,
 } = require("../../middleware/validation");
-const { getToken } = require("../../middleware/util");
-const bcrypt = require("bcryptjs");
+
 
 module.exports = {
   Query: {
     // get user
-    async getUser(_, { id }) {
+    async getUser(_, { userId }, context) {
+      const currentUser = isAuth(context);
+
+      console.log(currentUser)
       let user;
       try {
-        user = await User.findById(id);
+        user = await User.findById(userId);
       } catch (error) {
         throw new Error(error);
       }
@@ -147,8 +151,10 @@ module.exports = {
     // edit user
     async editUser(
       _,
-      { editUserInput: { id, picture, firstname, lastname, username, phone } }
+      { editUserInput: { picture, firstname, lastname, username, phone } }, context
     ) {
+      
+      const currentUser = isAuth(context)
       const { valid, errors } = editInputValidate(
         firstname,
         lastname,
@@ -163,7 +169,7 @@ module.exports = {
 
       let existedUser;
       try {
-        existedUser = await User.findById(id);
+        existedUser = await User.findById(currentUser.id);
       } catch (error) {
         throw new Error(error);
       }
@@ -186,7 +192,7 @@ module.exports = {
       }
     },
     // edit password
-    async editPassword(_, { id, password, confirmPassword }) {
+    async editPassword(_, { email, password, confirmPassword }) {
       if (password === "" || password !== confirmPassword) {
         throw new UserInputError(
           "Please check your password and confirm password"
@@ -194,7 +200,7 @@ module.exports = {
       }
       let existedUser;
       try {
-        existedUser = await User.findById(id);
+        existedUser = await User.findById(userId);
       } catch (error) {
         throw new Error(error);
       }
@@ -214,10 +220,10 @@ module.exports = {
       }
     },
     // delete user
-    async deleteUser(_, { id }) {
+    async deleteUser(_, { userId }) {
       let user;
       try {
-        user = await User.findById(id);
+        user = await User.findById(userId);
       } catch (error) {
         throw new Error(error);
       }

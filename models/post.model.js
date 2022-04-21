@@ -4,8 +4,9 @@ const postSchema = mongoose.Schema({
     image:{type: String},
     title:{type: String},
     body:{type: String},
+    category:{type: String},
     views:[{type: mongoose.Schema.Types.ObjectId, ref:'User'}],
-    likes:[{type: mongoose.Schema.Types.ObjectId, ref:'User'}],
+    likes:[{userId: {type: mongoose.Schema.Types.ObjectId, ref:'User'}}],
     creator:{type: String},
     cloudinary_id:{type: String},
     comments:[{

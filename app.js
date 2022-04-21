@@ -6,11 +6,12 @@ const mongoose = require("mongoose");
 dotenv.config();
 
 const typeDefs = require("./graphql/typeDefs");
-const resolvers = require("./graphql/resolvers")
+const resolvers = require("./graphql/resolvers");
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: ({req}) => ({req})
 });
 
 mongoose
