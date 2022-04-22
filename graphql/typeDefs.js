@@ -6,23 +6,46 @@ module.exports = gql`
     image: String!
     title: String!
     body: String!
-    views: [User]
-    likes:[User]
-    creator:[User]
+    category: String!
+    views: [View]!
+    likes: [Like]!
+    creator: String!
     cloudinary_id: String!
-    comment: [User]
+    comments: [Comment]!
+    likeCount: Int!
+    commentsCount: Int!
+    viewsCount: Int!
   }
 
-  input PostInputs {
+  type View {
+    userIp: String!
+  }
+
+  type Comment {
+    id: ID!
+    userId: String!
+    username: String!
+    comment: String!
+    createdAt: String!
+  }
+
+  type Like {
+    id: ID!
+    userId: String!
+  }
+
+  input PostInput {
     image: String!
     title: String!
     body: String!
+    category: String!
   }
 
   input EditPostInput {
     image: String
     title: String
     body: String
+    category: String
   }
 
   type User {
@@ -38,7 +61,7 @@ module.exports = gql`
     token: String
   }
 
-  input RegisterInput{
+  input RegisterInput {
     picture: String!
     firstname: String!
     lastname: String!
@@ -49,7 +72,7 @@ module.exports = gql`
     confirmPassword: String!
   }
 
-  input EditUserInput{
+  input EditUserInput {
     picture: String
     firstname: String
     lastname: String
@@ -60,10 +83,10 @@ module.exports = gql`
   }
 
   type Query {
-    getUser(id: ID!): User!
+    getUser(userId: ID!): User!
     getAllUsers: [User]
 
-    getPost(id: ID!): Post
+    getPost(postId: ID!): Post
     getAllPosts: [Post]
   }
 
@@ -71,14 +94,22 @@ module.exports = gql`
     registerUser(registerInput: RegisterInput): User!
     login(email: String!, password: String!): User
     editUser(editUserInput: EditUserInput): User!
-    editPassword(userId: ID!, password: String!, confirmPassword: String!): String
+    editPassword(
+      userId: ID!
+      password: String!
+      confirmPassword: String!
+    ): String
     deleteUser(userId: ID): String
 
-    newPost(postInput: PostInputs): Post
-    editPost(postId: ID!, editPostInput: EditPostInput): Post
-    likePost(postId: ID!): String
-    commentPost(postId: ID!, comment: String): Post
-    deleteComment(postId: ID!, commentId: ID!): String
+    newPost(postInput: PostInput): Post
+    editPost(postId: ID!, editPostInput: EditPostInput): Post!
+    likePost(postId: ID!): Post!
+    commentPost(postId: ID!, comment: String): Post!
+    deletePostComment(postId: ID!, commentId: ID!): Post!
     deletePost(postId: ID!): String
   }
+
+  # type Subscription{
+  #   newPost: Post!
+  # }
 `;

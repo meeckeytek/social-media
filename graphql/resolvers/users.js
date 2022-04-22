@@ -115,6 +115,7 @@ module.exports = {
         token: getToken(user),
       };
     },
+
     // login user
     async login(_, { email, password }) {
       if (email === "" || password === "") {
