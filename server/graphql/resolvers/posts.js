@@ -4,16 +4,6 @@ const Post = require("../../models/post.model");
 
 module.exports = {
   Query: {
-    //get all posts
-    async getAllPosts() {
-      try {
-        const posts = await Post.find();
-        return posts;
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
-
     //get single post
     async getPost(_, { postId }) {
       let post;
@@ -30,7 +20,7 @@ module.exports = {
       const userIp = getUserIp();
       let existedIp = post.views.find((ip) => ip.userIp === userIp);
       if (!existedIp) {
-        post.views.push({userIp});
+        post.views.push({ userIp });
         await post.save();
       }
       return post;
@@ -39,9 +29,26 @@ module.exports = {
 
   //Mutation
   Mutation: {
+    //get all posts
+    async getAllPosts(_, { search, limit }) {
+      const searchQuery = {
+        $or: [
+          { title: new RegExp(String(search), "i") },
+          { body: new RegExp(String(search), "i") },
+          { category: new RegExp(String(search), "i") },
+        ],
+      };
+
+      try {
+        const posts = await Post.find(searchQuery).sort({ createAt: "-1" }).limit(limit);
+        return posts;
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+
     //create new post
     async newPost(_, { postInput: { image, title, body, category } }, context) {
-      console.log(image, title, body, category)
       const currentUser = isAuth(context);
       if (
         image.trim() === "" ||
@@ -56,7 +63,10 @@ module.exports = {
         title,
         body,
         category,
-        creator: currentUser.id,
+        creator: {
+          userId: currentUser.id,
+          username: currentUser.username
+        },
         cloudinary_id: "welcome",
       });
 
@@ -125,7 +135,7 @@ module.exports = {
             (like) => like.userId !== currentUser.id
           );
         } else {
-          post.likes.push({userId: currentUser.id});
+          post.likes.push({ userId: currentUser.id });
         }
       } else {
         throw new UserInputError("Post not found");

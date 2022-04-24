@@ -9,7 +9,7 @@ module.exports = gql`
     category: String!
     views: [View]!
     likes: [Like]!
-    creator: String!
+    creator: [Creator]!
     cloudinary_id: String!
     comments: [Comment]!
     likeCount: Int!
@@ -19,6 +19,10 @@ module.exports = gql`
 
   type View {
     userIp: String!
+  }
+  type Creator{
+    userId: String!
+    username: String!
   }
 
   type Comment {
@@ -87,7 +91,6 @@ module.exports = gql`
     getAllUsers: [User]
 
     getPost(postId: ID!): Post
-    getAllPosts: [Post]
   }
 
   type Mutation {
@@ -101,6 +104,7 @@ module.exports = gql`
     ): String
     deleteUser(userId: ID): String
 
+    getAllPosts(search: String, limit: Int): [Post]
     newPost(postInput: PostInput): Post
     editPost(postId: ID!, editPostInput: EditPostInput): Post!
     likePost(postId: ID!): Post!

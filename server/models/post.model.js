@@ -8,7 +8,10 @@ const postSchema = mongoose.Schema(
     category: { type: String },
     views: [{ userIp: { type: String } }],
     likes: [{ userId: { type: String } }],
-    creator: { type: String },
+    creator: [
+     { userId:{type: mongoose.Schema.Types.ObjectId, ref: "User"},
+     username: { type: String }}
+    ],
     cloudinary_id: { type: String },
     comments: [
       {
